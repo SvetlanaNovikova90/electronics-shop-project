@@ -1,5 +1,5 @@
 import csv
-import os
+from pathlib import Path
 
 
 class Item:
@@ -8,7 +8,7 @@ class Item:
     """
     pay_rate = 1.0
     all = []
-
+    DATA_DIR = Path(__file__).parent.joinpath("items.csv")
     def __init__(self, name: str, price: float, quantity: int) -> None:
         """
         Создание экземпляра класса item.
@@ -22,26 +22,42 @@ class Item:
         self.quantity = quantity
         Item.all.append(self)
 
+    @classmethod
+    def instantiate_from_csv(cls):
+        '''класс-метод, инициализирующий
+        экземпляры класса Item данными
+        из файла src/items.csv'''
+        with cls.DATA_DIR.open(newline='') as csvfile:
+            reader = csv.DictReader(csvfile)
+            for row in reader:
+                print(row['name'], row['price'], row['quantity'])
+                name = row['name']
+                price = row['price']
+                quantity = row['quantity']
+                cls(name, price, quantity)
+            return cls
+
+    @staticmethod
+    def string_to_number(string):
+        '''статический метод, возвращающий число из числа-строки'''
+        int_string = int(float(string))
+        return int_string
+
     @property
     def name(self):
+        '''добавить геттер для name'''
         return self.__name
 
     @name.setter
     def name(self, name_new):
+        '''в сеттере name проверять,
+         что длина наименования товара
+         не больше 10 симвовов. В противном случае,
+         обрезать строку (оставить первые 10 символов).'''
         if len(name_new) > 10:
-            self.__name = name_new[0:9]
+            self.__name = name_new[0:10]
         else:
             self.__name = name_new
-
-    @classmethod
-    def instantiate_from_csv(cls, date):
-        with open(date, newline='') as csvfile:
-            reader = csv.DictReader(csvfile)
-            print(reader)
-
-    @staticmethod
-    def string_to_number():
-        return len(Item.all)
 
     def calculate_total_price(self) -> float:
         """
