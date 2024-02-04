@@ -38,7 +38,15 @@ def test_name():
     assert item3.name == 'Чайник'
     name_new = "Чайник электрический"
     item3.name = name_new
-    assert item3.name == 'Чайник эле'
+    assert item3.name == 'Чайник'
     name_new_2 = "Термопод"
     item3.name = name_new_2
     assert item3.name == 'Термопод'
+
+def test_repr():
+    item3 = Item('Чайник', "100", "25")
+    assert repr(item3) == "Item('Чайник', 100, 25)"
+
+def test_str():
+    item3 = Item('Чайник', "100", "25")
+    assert str(item3) == 'Чайник'
