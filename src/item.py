@@ -23,10 +23,15 @@ class Item:
         Item.all.append(self)
 
     def __repr__(self):
-        return f"{self.__class__.__name__}('{self.__name}', {self.price}, {self.quantity})"
+        return f"{self.__class__.__name__}('{self.__name}',{self.price},{self.quantity})"
 
     def __str__(self):
         return f'{self.__name}'
+
+    def __add__(self, other):
+        if isinstance(other, self.__class__):
+            return self.quantity + other.quantity
+        return
 
     @classmethod
     def instantiate_from_csv(cls):
@@ -61,7 +66,7 @@ class Item:
          не больше 10 симвовов. В противном случае,
          обрезать строку (оставить первые 10 символов).'''
         if len(name_new) > 10:
-            return 'Exception: Длина наименования товара превышает 10 символов'
+            None
         else:
             self.__name = name_new
 
