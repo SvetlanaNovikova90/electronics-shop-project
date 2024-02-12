@@ -5,13 +5,13 @@ if __name__ == '__main__':
     assert str(kb) == "Dark Project KD87A"
 
     assert str(kb.language) == "EN"
-
+    #
     kb.change_lang()
     assert str(kb.language) == "RU"
-
+   
     # Сделали EN -> RU -> EN
     kb.change_lang()
     assert str(kb.language) == "EN"
 
     kb.language = 'CH'
-    # AttributeError: property 'language' of 'Keyboard' object has no setter
+    # # AttributeError: property 'language' of 'Keyboard' object has no setter

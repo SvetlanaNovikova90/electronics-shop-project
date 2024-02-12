@@ -9,6 +9,7 @@ class Item:
     pay_rate = 1.0
     all = []
     DATA_DIR = Path(__file__).parent.joinpath("items.csv")
+
     def __init__(self, name: str, price: float, quantity: int) -> None:
         """
         Создание экземпляра класса item.
@@ -17,6 +18,7 @@ class Item:
         :param price: Цена за единицу товара.
         :param quantity: Количество товара в магазине.
         """
+        # super.__init__()
         self.__name = name
         self.price = price
         self.quantity = quantity
