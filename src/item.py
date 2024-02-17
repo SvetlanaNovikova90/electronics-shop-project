@@ -53,7 +53,7 @@ class Item:
                     cls(name, price, quantity)
             return cls
         except FileNotFoundError:
-            raise 'Отсутствует файл item.csv'
+            raise FileNotFoundError('Отсутствует файл item.csv')
         except KeyError:
             raise InstantiateCSVError
 

@@ -1,7 +1,9 @@
 """Здесь надо написать тесты с использованием pytest для модуля item."""
+from pathlib import Path
+
 import pytest
 
-from src.item import Item
+from src.item import Item, InstantiateCSVError
 from src.phone import Phone
 
 
@@ -25,10 +27,20 @@ def test_instantiate_from_csv():
     assert item1.price == '100'
     assert item1.quantity == '1'
     assert len(Item.all) == 5
+    # with pytest.raises(FileNotFoundError):
+    #     item1.instantiate_from_csv()
+    # with pytest.raises(KeyError):
+    #     item1.instantiate_from_csv()
+
+def test_file_not_found_instantiate():
+    Item.DATA_DIR = Path(__file__).parent.joinpath("../src/ite.csv")
     with pytest.raises(FileNotFoundError):
-        item1.instantiate_from_csv()
-    with pytest.raises(KeyError):
-        item1.instantiate_from_csv()
+        Item.instantiate_from_csv()
+
+def test_file_broken_instantiate():
+    Item.DATA_DIR = Path(__file__).parent.joinpath("../src/item.csv")
+    with pytest.raises(InstantiateCSVError):
+        Item.instantiate_from_csv()
 
 
 def test_calculate_total_price():
