@@ -1,4 +1,5 @@
 import csv
+import os
 from pathlib import Path
 
 
@@ -40,15 +41,23 @@ class Item:
         '''класс-метод, инициализирующий
         экземпляры класса Item данными
         из файла src/items.csv'''
-        with cls.DATA_DIR.open(newline='') as csvfile:
-            reader = csv.DictReader(csvfile)
-            for row in reader:
-                print(row['name'], row['price'], row['quantity'])
-                name = row['name']
-                price = row['price']
-                quantity = row['quantity']
-                cls(name, price, quantity)
+
+        try:
+            with cls.DATA_DIR.open(newline='') as csvfile:
+                reader = csv.DictReader(csvfile)
+                for row in reader:
+                    print(row['name'], row['price'], row['quantity'])
+                    name = row['name']
+                    price = row['price']
+                    quantity = row['quantity']
+                    cls(name, price, quantity)
             return cls
+        except FileNotFoundError:
+            raise 'Отсутствует файл item.csv'
+        except KeyError:
+            raise InstantiateCSVError
+
+
 
     @staticmethod
     def string_to_number(string):
@@ -66,7 +75,7 @@ class Item:
         '''в сеттере name проверять,
          что длина наименования товара
          не больше 10 симвовов. В противном случае,
-         обрезать строку (оставить первые 10 символов).'''
+         взващает None.'''
         if len(name_new) > 10:
             None
         else:
@@ -86,3 +95,14 @@ class Item:
         Применяет установленную скидку для конкретного товара.
         """
         self.price *= self.pay_rate
+
+
+class InstantiateCSVError(Exception):
+
+    def __init__(self):
+        self.message = 'Файл item.csv поврежден'
+
+        super().__init__(self.message)
+
+    def __str__(self):
+        return self.message

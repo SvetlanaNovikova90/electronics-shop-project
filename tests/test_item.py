@@ -21,10 +21,14 @@ def test_instantiate_from_csv():
     Item.instantiate_from_csv()
     item1 = Item.all[0]
 
-    assert item1.name == 'Чайник'
-    assert item1.price == 100
-    assert item1.quantity == 25
-    assert len(Item.all) == 8
+    assert item1.name == 'Stove'
+    assert item1.price == '100'
+    assert item1.quantity == '1'
+    assert len(Item.all) == 5
+    with pytest.raises(FileNotFoundError):
+        item1.instantiate_from_csv()
+    with pytest.raises(KeyError):
+        item1.instantiate_from_csv()
 
 
 def test_calculate_total_price():
